@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lilás & Blanc · Loja Virtual</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+        }
+
+        body {
+            background: #fbfaff;
+            background-image: radial-gradient(circle at 20% 10%, #f5f0ff, #faf5ff);
+            min-height: 100vh;
+            padding: 2rem 1.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .loja-container {
+            max-width: 1400px;
+            width: 100%;
+            background: rgba(255, 252, 255, 0.7);
+            backdrop-filter: blur(6px);
+            border-radius: 3rem;
+            box-shadow: 0 20px 40px rgba(160, 130, 190, 0.12), 0 8px 20px rgba(140, 110, 170, 0.08);
+            padding: 2.8rem 2.5rem;
+            border: 1px solid rgba(220, 200, 240, 0.5);
+        }
+
+        .header-loja {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 1.4rem;
+            border-bottom: 2px solid #ede6f7;
+            margin-bottom: 2.5rem;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .logo-area h1 {
+            font-size: 2.2rem;
+            font-weight: 600;
+            color: #7a5a8a;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-area i {
+            font-size: 2.2rem;
+            color: #b28ac2;
+            filter: drop-shadow(0 2px 8px rgba(160, 120, 190, 0.2));
+        }
+
+        .header-icones {
+            display: flex;
+            gap: 1.8rem;
+            font-size: 1.2rem;
+            color: #9a7aaa;
+        }
+
+        .header-icones i {
+            transition: 0.2s;
+            cursor: pointer;
+        }
+
+        .header-icones i:hover {
+            color: #b28ac2;
+            transform: scale(1.06);
+        }
+
+        .badge-carrinho {
+            background: #ede0f5;
+            color: #5d3d6d;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 0.1rem 0.6rem;
+            border-radius: 40px;
+            margin-left: 5px;
+            vertical-align: super;
+        }
+
+        .filtros {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.7rem 1.8rem;
+            margin-bottom: 2rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px solid #ede6f7;
+        }
+
+        .filtros span {
+            font-weight: 500;
+            color: #9a7aaa;
+            margin-right: 0.2rem;
+        }
+
+        .filtro-botao {
+            background: transparent;
+            border: 1.5px solid #ede0f5;
+            padding: 0.25rem 1.2rem;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #8a6a9a;
+            transition: 0.2s;
+            cursor: pointer;
+        }
+
+        .filtro-botao.ativo {
+            background: #ede0f5;
+            border-color: #dcc8e8;
+            color: #5d3d6d;
+            box-shadow: inset 0 0 0 1px #e8d8f0;
+        }
+
+        .filtro-botao:hover {
+            background: #f5edfa;
+            border-color: #dcc8e8;
+        }
+
+        .contador-produtos {
+            font-size: 0.85rem;
+            color: #8a7a9a;
+            margin-left: auto;
+        }
+
+        .contador-produtos span {
+            font-weight: 700;
+            color: #7a5a8a;
+        }
+
+        .produtos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 2rem 1.6rem;
+            margin-top: 0.5rem;
+        }
+
+        .produto-card {
+            background: rgba(255, 252, 255, 0.8);
+            backdrop-filter: blur(4px);
+            border-radius: 2rem;
+            padding: 1.6rem 1.2rem 1.5rem;
+            border: 1px solid #f0e8f5;
+            box-shadow: 0 6px 16px -6px rgba(160, 130, 180, 0.08);
+            transition: all 0.25s ease;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .produto-card:hover {
+            transform: translateY(-6px);
+            border-color: #dcc8e8;
+            box-shadow: 0 18px 30px -12px rgba(140, 100, 170, 0.18);
+            background: rgba(255, 254, 255, 0.9);
+        }
+
+        .produto-card.oculto {
+            display: none;
+        }
+
+        .produto-imagem {
+            background: linear-gradient(145deg, #f5edfa, #ede0f5);
+            border-radius: 1.6rem;
+            aspect-ratio: 1/1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            font-size: 3.8rem;
+            color: #b28ac2;
+            transition: 0.2s;
+            border: 1px solid #f0e8f5;
+        }
+
+        .produto-card:hover .produto-imagem {
+            background: #faf5ff;
+            border-color: #dcc8e8;
+        }
+
+        .produto-nome {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #4d2d5d;
+            margin-bottom: 0.2rem;
+        }
+
+        .produto-desc {
+            font-size: 0.8rem;
+            color: #8a7a9a;
+            line-height: 1.3;
+            margin-bottom: 0.6rem;
+            flex: 1;
+        }
+
+        .produto-preco {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #8a4a9a;
+            letter-spacing: -0.3px;
+            margin-top: 0.2rem;
+        }
+
+        .produto-preco small {
+            font-size: 0.7rem;
+            font-weight: 400;
+            color: #b89ac8;
+            text-decoration: line-through;
+            margin-left: 8px;
+        }
+
+        .produto-acoes {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 0.8rem;
+            padding-top: 0.7rem;
+            border-top: 1px solid #f0e8f5;
+        }
+
+        .btn-adicionar {
+            background: #ede0f5;
+            border: none;
+            padding: 0.3rem 1.2rem;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: #5d3d6d;
+            transition: 0.2s;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(160, 130, 180, 0.1);
+        }
+
+        .btn-adicionar i {
+            margin-right: 6px;
+            color: #a07ab0;
+        }
+
+        .btn-adicionar:hover {
+            background: #dcc8e8;
+            color: #4d2d5d;
+            box-shadow: 0 4px 10px rgba(160, 130, 180, 0.2);
+        }
+
+        .btn-adicionar.adicionado {
+            background: #b8a0c8;
+            color: #ffffff;
+        }
+
+        .btn-adicionar.adicionado i {
+            color: #ffffff;
+        }
+
+        .favorito {
+            color: #c8b0d8;
+            transition: 0.2s;
+            cursor: pointer;
+            font-size: 1.1rem;
+            z-index: 2;
+            position: relative;
+        }
+
+        .favorito:hover {
+            color: #b28ac2;
+            transform: scale(1.1);
+        }
+
+        .favorito.ativo {
+            color: #d45a8a;
+        }
+
+        .selo-novo {
+            background: #ede0f5;
+            color: #5d3d6d;
+            font-size: 0.6rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 0.15rem 0.9rem;
+            border-radius: 40px;
+            position: absolute;
+            top: 0.8rem;
+            right: 0.8rem;
+            backdrop-filter: blur(4px);
+            background: rgba(237, 224, 245, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            z-index: 2;
+        }
+
+        .selo-promo {
+            background: #e8d0f0;
+            color: #4d2d5d;
+            font-size: 0.6rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 0.15rem 0.9rem;
+            border-radius: 40px;
+            position: absolute;
+            top: 0.8rem;
+            right: 0.8rem;
+            backdrop-filter: blur(4px);
+            background: rgba(232, 208, 240, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            z-index: 2;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #5d3d6d;
+            color: #fff;
+            padding: 0.8rem 2rem;
+            border-radius: 60px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            box-shadow: 0 8px 24px rgba(90, 50, 110, 0.3);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            z-index: 1000;
+            pointer-events: none;
+        }
+
+        .toast.visivel {
+            opacity: 1;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(40, 20, 50, 0.6);
+            backdrop-filter: blur(8px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 1.5rem;
+        }
+
+        .modal-overlay.aberto {
+            display: flex;
+        }
+
+        .modal-conteudo {
+            background: #ffffff;
+            border-radius: 2.5rem;
+            max-width: 520px;
+            width: 100%;
+            padding: 2.5rem 2rem;
+            box-shadow: 0 30px 60px rgba(80, 40, 100, 0.3);
+            position: relative;
+            animation: modalEntrada 0.3s ease;
+            border: 1px solid #f0e8f5;
+        }
+
+        @keyframes modalEntrada {
+            from {
+                transform: scale(0.9) translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1) translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-fechar {
+            position: absolute;
+            top: 1.2rem;
+            right: 1.5rem;
+            font-size: 1.8rem;
+            color: #b89ac8;
+            cursor: pointer;
+            transition: 0.2s;
+            background: none;
+            border: none;
+        }
+
+        .modal-fechar:hover {
+            color: #7a5a8a;
+            transform: rotate(90deg);
+        }
+
+        .modal-imagem {
+            background: linear-gradient(145deg, #f5edfa, #ede0f5);
+            border-radius: 1.6rem;
+            aspect-ratio: 1/1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            color: #b28ac2;
+            margin-bottom: 1.2rem;
+            border: 1px solid #f0e8f5;
+        }
+
+        .modal-nome {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #4d2d5d;
+            margin-bottom: 0.3rem;
+        }
+
+        .modal-desc {
+            font-size: 1rem;
+            color: #8a7a9a;
+            margin-bottom: 0.8rem;
+            line-height: 1.5;
+        }
+
+        .modal-preco {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #8a4a9a;
+            margin-bottom: 1.2rem;
+        }
+
+        .modal-preco small {
+            font-size: 1rem;
+            font-weight: 400;
+            color: #b89ac8;
+            text-decoration: line-through;
+            margin-left: 10px;
+        }
+
+        .modal-acoes {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 0.8rem 1.5rem;
+            border-radius: 60px;
+            border: none;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .modal-btn-adicionar {
+            background: #ede0f5;
+            color: #5d3d6d;
+        }
+
+        .modal-btn-adicionar:hover {
+            background: #dcc8e8;
+        }
+
+        .modal-btn-adicionar.adicionado {
+            background: #b8a0c8;
+            color: #fff;
+        }
+
+        .modal-btn-favoritar {
+            background: #f5edfa;
+            color: #8a6a9a;
+            flex: 0.5;
+        }
+
+        .modal-btn-favoritar:hover {
+            background: #ede0f5;
+        }
+
+        .modal-btn-favoritar.ativo {
+            background: #f0d8e8;
+            color: #d45a8a;
+        }
+
+        .footer-loja {
+            margin-top: 3.5rem;
+            padding-top: 1.8rem;
+            border-top: 2px solid #ede6f7;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            color: #8a7a9a;
+            font-size: 0.9rem;
+        }
+
+        .footer-loja .info i {
+            margin-right: 8px;
+            color: #b28ac2;
+            width: 1.4rem;
+        }
+
+        .footer-loja .redes i {
+            font-size: 1.4rem;
+            margin-left: 14px;
+            color: #b28ac2;
+            transition: 0.2s;
+            cursor: pointer;
+        }
+
+        .footer-loja .redes i:hover {
+            color: #8a4a9a;
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 750px) {
+            .loja-container {
+                padding: 1.8rem 1.2rem;
+                border-radius: 2rem;
+            }
+            .logo-area h1 {
+                font-size: 1.7rem;
+            }
+            .header-icones {
+                gap: 1.2rem;
+                font-size: 1rem;
+            }
+            .filtros {
+                gap: 0.5rem 1rem;
+            }
+            .filtro-botao {
+                padding: 0.2rem 0.9rem;
+                font-size: 0.75rem;
+            }
+            .produtos-grid {
+                grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+                gap: 1.2rem;
+            }
+            .produto-imagem {
+                font-size: 2.8rem;
+            }
+            .produto-nome {
+                font-size: 0.95rem;
+            }
+            .modal-conteudo {
+                padding: 1.8rem 1.2rem;
+                margin: 1rem;
+            }
+            .modal-imagem {
+                font-size: 3.5rem;
+            }
+            .modal-nome {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .produtos-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 1rem;
+            }
+            .produto-card {
+                padding: 1rem 0.8rem;
+            }
+            .produto-imagem {
+                font-size: 2.2rem;
+            }
+            .footer-loja {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="loja-container">
+    <div class="header-loja">
+        <div class="logo-area">
+            <i class="fas fa-spa"></i>
+            <h1>Lilás & Blanc</h1>
+        </div>
+        <div class="header-icones">
+            <i class="fas fa-search" title="Buscar"></i>
+            <i class="fas fa-user" title="Minha conta"></i>
+            <i class="fas fa-heart" title="Favoritos" id="favoritos-link"></i>
+            <i class="fas fa-shopping-bag" title="Carrinho"> <span class="badge-carrinho" id="carrinho-contador">0</span></i>
+        </div>
+    </div>
+
+    <div class="filtros" id="filtros-container">
+        <span><i class="fas fa-tags"></i> Categorias:</span>
+        <span class="filtro-botao ativo" data-categoria="todos">Todos</span>
+        <span class="filtro-botao" data-categoria="vestidos">Vestidos</span>
+        <span class="filtro-botao" data-categoria="blusas">Blusas</span>
+        <span class="filtro-botao" data-categoria="calcados">Calçados</span>
+        <span class="filtro-botao" data-categoria="acessorios">Acessórios</span>
+        <span class="filtro-botao" data-categoria="promocao">Promoções</span>
+        <span class="contador-produtos"><span id="produtos-visiveis">24</span> produtos</span>
+    </div>
+
+    <div class="produtos-grid" id="produtos-grid">
+        <!-- 1 - Vestido -->
+        <div class="produto-card" data-categoria="vestidos">
+            <span class="selo-novo">novo</span>
+            <div class="produto-imagem"><i class="fas fa-vest"></i></div>
+            <div class="produto-nome">Vestido Lilás</div>
+            <div class="produto-desc">Midi, alças finas, tecido fluido.</div>
+            <div class="produto-preco">R$ 139,90 <small>R$ 189,90</small></div>
+            <div class="produto-acoes">
+                <span class="btn-adicionar"><i class="fas fa-plus"></i> Adicionar</span>
+                <span class="favorito"><i class="far fa-heart"></i></span>
+            </div>
+        </div>
+
+        <!-- 2 - Blusa -->
+        <div class="produto-card" data-categoria="blusas">
+            <div class="produto-imagem"><i class="fas fa-tshirt"></i></div>
+            <div class="produto-nome">Blusa Básica</div>
+            <div class="produto-desc">Manga curta, decote redondo, algodão.</div>
+            <div class="produto-preco">R$ 69,90</div>
+            <div class="produto-acoes">
+                <span class="btn-adicionar"><i class="fas fa-plus"></i> Adicionar</span>
+                <span class="favorito"><i class="far fa-heart"></i></span>
+            </div>
+        </div>
+
+        <!-- 3 - Promoção -->
+        <div class="produto-card" data-categoria="promocao">
+            <span class="selo-promo">-15%</span>
+            <div class="produto-imagem"><i class="fas fa-user-tie"></i></div>
+            <div class="produto-nome">Calça Alfaiataria</div>
+            <div class="produto-desc">Corte reto, cintura alta, lilás claro.</div>
+            <div class="produto-preco">R$ 159,90 <small>R$ 189,90</small></div>
+            <div class="produto-acoes">
+                <span class="btn-adicionar"><i class="fas fa-plus"></i> Adicionar</span>
+                <span class="favorito"><i class="far fa-heart"></i></span>
+            </div>
+        </div>
+
+        <!-- 4 - Acessório -->
+        <div class="produto-card" data-categoria="acessorios">
+            <div class="produto-imagem"><i class="fas fa-gem"></i></div>
+            <div class="produto-nome">Colar Pérola</div>
+            <div class="produto-desc">Miçangas lilás, fecho prata.</div>
+            <div class="produto-preco">R$ 45,90</div>
+            <div class="produto-acoes">
+                <span class="btn-adicionar"><i class="fas fa-plus"></i> Adicionar</span>
+                <span class="favorito"><i class="far fa-heart"></i></span>
+            </div>
+        </div>
+
+        <!-- 5 - Acessório -->
+        <div class="produto-card" data-categoria="acessorios">
+            <div class="produto-imagem"><i class="fas fa-hat-wizard"></i></div>
+            <div class="produto-nome">Chapéu Palha</div>
+            <div class="produto-desc">Fita lilás, ideal para dias de sol.</div>
+            <div class="produto-preco">R$ 68,00</div>
+            <div class="produto-acoes">
+                <span class="btn-adicionar"><i class="fas fa-plus"></i> Adicionar</span>
+                <span class="favorito"><i class="far fa-heart"></i></span>
+            </div>
+        </div>
+
+        <!-- 6 - Calçado -->
+        <div class="produto-card" data-categoria="calcados">
+            <span class="selo-novo">novo</span>
+            <div class="produto-imagem"><i class="fas fa-shoe-prints"></i></div>
+            <div class="produto-nome">Sandália Rasteira</div>
+            <div class="produto-desc">Tiras lilás, sola macia.</div>
+            <div class="produto-preco">R$ 89,90</div>
+            <div class="produto-acoes">
+                <span class="btn-adicionar"><i class="fas fa-plus"></i> Adicionar</span>
+                <span class="favorito"><i class="far fa-heart"></i></span>
+            </div>
+        </div>
+
+        <!-- 7 - Vestido -->
+        <div class="produto-card" data-categoria="vestidos">
+            <div class="produto-imagem"><i class="fas fa-vest-pants"></i></div>
+            <div class="produto-nome">Macacão Floral</div>
+            <div class="produto-desc">Alças ajustáveis, estampa lilás.</div>
+            <div class="produto-preco">R$ 129,90</div>
+            <div class="produto-acoes">
+                <span class="btn-adicionar"><i class="fas fa-plus"></i> Adicionar</span>
+                <span class="favorito"><i class="far fa-heart"></i></span>
+            </div>
+        </div>
+
+        <!-- 8 - Acessório -->
+        <div class="produto-card" data-categoria="acessorios">
+            <div class="produto-imagem"><i class="fas fa-ring"></i></div>
+            <div class="produto-nome">Anel Flor</div>
+            <div class="produto-desc">Prata com pedra lilás.</div>
+            <div class="produto-preco">R$ 39,90</div>
+            <div class="produto-acoes">
+                <span class="btn-adicionar"><i class="fas fa-plus"></i> Adicionar</span>
+                <span class="favorito"><i class="far fa-heart"></i></span>
+            </div>
+        </div>
+
+        <!-- 9 - Acessório -->
+        <div class="produto-card" data-categoria="acessorios">
+            <div class="produto-imagem"><i class="fas fa-paint-brush"></i></div>
+            <div class="produto-nome">Bolsa Tote</div>
+            <div class="produto-desc">Alças largas, lilás queimado.</div>
+            <div class="produto-preco">R$ 99,90</div>
+            <div class="produto-acoes">
+                <span class="btn-adicionar"><i class="fas fa-plus"></i> Adicionar</span>
+                <span class="favorito"><i class="far fa-heart"></i></span>
+            </div>
+        </div>
+
+        <!-- 10 - Promoção -->
+        <div class="produto-card" data-categoria="promocao">
+            <span class="selo-promo">-20%</span>
+            <div class="produto-imagem"><i class="fas fa-crown"></i></div>
+            <div class="produto-nome">Blazer Lilás</div>
+            <div class="produto-desc">Modelo oversized, botão único.</div>
+            <div class="produto-preco">R$ 179,90 <small>R$ 224,90</small></div>
+            <div class="produto-acoes">
+                <span class="btn-adicionar"><i class="fas fa-plus"></i> Adicionar</span>
+                <span class="favorito"><i class="far fa-heart"></i></span>
+            </div>
+        </div>
+
+        <!-- 11 - Blusa -->
+        <div class="produto-card" data-categoria="blusas">
+            <div class="produto-imagem"><i class="fas fa-tshirt"></i></div>
+            <div class="produto-nome">Camisa Linho</div>
+            <div class="produto-desc">Manga longa, lavanda, tecido leve.</div>
+            <div class="produto-preco">R$ 119,90</div>
+            <div class="produto-acoes">
+                <span class="btn-adicionar"><i class="fas fa-plus"></i> Adicionar</span>
+                <span class="favorito"><i class="far fa-heart"></i></span>
+            </div>
+        </div>
+
+        <!-- 12 - Vestido -->
+        <div class="produto-card" data-categoria="vestidos">
+            <span class="selo-novo">novo</span>
+            <div class="produto-imagem"><i class="fas fa-vest"></i></div>
+            <div class="produto-nome">Vestido Longo</div>
+            <div class="produto-desc">Evangélico, mangas bufantes, lilás.</div>
+            <div class="produto-preco">R$ 189,90</div>
+            <div class="produto-acoes">
+                <span class="btn-adicionar"><i class="fas fa-plus"></i> Adicionar</span>
+                <span class="favorito"><i class="far fa-heart"></i></span>
+            </div>
+        </div>
+
+        <!-- 13 - Vestido -->
+        <div class="produto-card" data-categoria="vestidos">
+            <div class="produto-imagem"><i class="fas fa-user-tie"></i></div>
+            <div class="produto-nome">Saia Midi</div>
+            <div class="produto-desc">Corte evasê, lilás com pregas.</div>
+            <div class="produto-preco">R$ 89,90</div>
+            <div class="produto-acoes">
+                <span class="btn-adicionar"><i class="fas fa-plus"></i> Adicionar</span>
+                <span class="favorito"><i class="far fa-heart"></i></span>
+            </div>
+        </div>
+
+        <!-- 14 - Acessório -->
+        <div class="produto-card" data-categoria="acessorios">
+            <div class="produto-imagem"><i class="fas fa-gem"></i></div>
+            <div class="produto-nome">Brinco Flor</div>
+            <div class="produto-desc">Folheado prata, pedra lilás.</div>
+            <div class="produto-preco">R$ 29,90</div>
+            <div class="produto-acoes">
+                <span class="btn-adicionar"><i class="fas fa-plus"></i> Adicionar</span>
+                <span class="favorito"><i class="far fa-heart"></i></span>
+            </div>
+        </div>
+
+        <!-- 15 - Calçado -->
+        <div class="produto-card" data-categoria="calcados">
+            <span class="selo-promo">-10%</span>
+            <div class="produto-imagem"><i class="fas fa-shoe-prints"></i></div>
+            <div class="produto-nome">Tênis Branco</div>
+            <div class="produto-desc">Detalhes lilás, confortável.</div>
+            <div class="produto-preco">R$ 149,90 <small>R$ 169,90</small></div>
+            <div class="produto-acoes">
+                <span class="btn-adicionar"><i class="fas fa-plus"></i> Adicionar</span>
+                <span class="favorito"><i class="far fa-heart"></i></span>
+            </div>
+        </div>
+
+        <!-- 16 - Acessório -->
+        <div class="produto-card" data-categoria="acessorios">
+            <div class="produto-imagem"><i class="fas fa-paint-brush"></i></div>
+            <div class="produto-nome">Mochila Lilás</div>
+            <div class="produto-desc">Compacta, alças ajustáveis.</div>
+            <div class="produto-preco">R$ 79,90</div>
+            <div class="produto-acoes">
+                <span class="btn-adicionar"><i class="fas fa-plus"></i> Adicionar</span>
+                <span class="favorito"><i class="far fa-heart"></i></span>
+            </div>
+        </div>
+
+        <!-- 17 - Blusa -->
+        <div class="produto-card" data-categoria="blusas">
+            <div class="produto-imagem"><i class="fas fa-tshirt"></i></div>
+            <div class="produto-nome">Cropped</div>
+            <div class="produto-desc">Alça fina, lilás com laço.</div>
+            <div class="produto-preco">R$ 49,90</div>
+            <div class="produto-acoes">
+                <span class="btn-adicionar"><i class="fas fa-plus"></i> Adicionar</span>
+                <span class="favorito"><i class="far fa-heart"></i></span>
+            </div>
+        </div>
+
+        <!-- 18 - Vestido -->
+        <div class="produto-card" data-categoria="vestidos">
+            <span class="selo-novo">novo</span>
+            <div class="produto-imagem"><i class="fas fa-vest-pants"></i></div>
+            <div class="produto-nome">Jardineira</div>
+            <div class="produto-desc">Macacão curto, lilás claro.</div>
+            <div class="produto-preco">R$ 109,90</div>
+            <div class="produto-acoes">
+                <span class="btn-adicionar"><i class="fas fa-plus"></i> Adicionar</span>
+                <span class="favorito"><i class="far fa-heart"></i></span>
+            </div>
+        </div>
+
+        <!-- 19 - Acessório -->
+        <div class="produto-card" data-categoria="acessorios">
+            <div class="produto-imagem"><i class="fas fa-ring"></i></div>
+            <div class="produto-nome">Pulseira Corrente</div>
+            <div class="produto-desc">Fechamento em coração lilás.</div>
+            <div class="produto-preco">R$ 34,90</div>
+            <div class="produto-acoes">
+                <span class="btn-adicionar"><i class="fas fa-plus"></i> Adicionar</span>
+                <span class="favorito"><i class="far fa-heart"></i></span>
+            </div>
+        </div>
+
+        <!-- 20 - Promoção -->
+        <div class="produto-card" data-categoria="promocao">
+            <span class="selo-promo">-25%</span>
+           
